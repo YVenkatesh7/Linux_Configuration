@@ -1,25 +1,25 @@
 # Linux_Configuration
-#Prepared by yekkanti venkatesh
+#Prepared by Yekkanti Venkatesh
 
 This is the final project for Udacity's [Full Stack Web Developer Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004). 
 
 This page explains how to secure and set up a Linux distribution on a virtual machine, install and configure a web and database server to host a web application. 
 - The Linux distribution is [Ubuntu](https://www.ubuntu.com/download/server) 16.04 LTS.
 - The virtual private server is [Amazon](https://lightsail.aws.amazon.com/).
-- The web application is my [Item Catalog project](https://github.com/boisalai/udacity-catalog-app) created earlier in this Nanodegree program.
+- The web application is my [Item Catalog project](https://github.com/YVenkatesh7/catalog.git) created earlier in this Nanodegree program.
 - The database server is [PostgreSQL](https://www.postgresql.org/).
 
-You can visit http://3.93.45.233/ or http://ec2-3-93-45-233.compute-1.amazonaws.com/ for the website deployed.
+You can visit http://18.209.13.101/ or http://ec2-18-209-13-101.compute-1.amazonaws.com/ for the website deployed.
 
 ## Get a server
 ### Step 1: Start a new Ubuntu Linux server instance on Amazon EC2 
 
   - Login to *[aws.amazon.com](https://console.aws.amazon.com)* and login to default user (ubuntu)
   - Choose EC2 and Launch Instance with appropriate settings.
-  - Check for instance IPv4 public IP - 3.93.45.233
+  - Check for instance IPv4 public IP - 18.209.13.101
   - we can download a .pem file and connect with following command
     ```
-    ssh -i linux_25_02_19.pem ubuntu@3.93.45.233
+    ssh -i linux_26.pem ubuntu@18.209.13.101
     ``` 
   - 22 is Port by Default,Later we need to change it to 2200 as per the
     udacity-linux-server-configuration rubrics.
@@ -41,7 +41,7 @@ sudo apt-get upgrade
 - Save and exit using esc and confirm with :wq.
 - Restart SSH: `sudo service ssh restart`.
 - Change inbound rules in Amazon EC2 --> Type : Custom TCP Rule as 2200
-- To check port 2200 wether working or not by `ssh -i linux_25_02_19.pem -p 2200 ubuntu@3.93.45.233` 
+- To check port 2200 wether working or not by `ssh -i linux_26.pem -p 2200 ubuntu@18.209.13.101` 
 
 ### Step 4: Configure the Uncomplicated Firewall (UFW)
 
@@ -111,12 +111,12 @@ sudo apt-get upgrade
   -Configure key-based authentication for grader user
   - create .ssh folder by `mkdir /home/grader/.ssh`
   - Run this command `sudo cp /home/ubuntu/.ssh/authorized_keys /home/grader/.ssh/authorized_keys`
-  - change ownership `sudo chown grader.grader /home/grader/.ssh`
+  - change ownership `chown grader.grader /home/grader/.ssh`
   - add 'grader' to sudo group `sudo usermod -aG sudo grader`
   - change permissions for .ssh folder `sudo chmod 0700 /home/grader/.ssh/`, for authorized_keys `chmod 644 authorized_keys`
   - Check in `vi /etc/ssh/sshd_config` file if `PermitRootLogin` is set to `no`
   - Restart SSH: `sudo service ssh restart`
-  - On the local machine, cheking if the grader account working or not by running this command : `ssh -i linux_25_02_19.pem -p 2200 grader@3.93.45.233`.
+  - On the local machine, cheking if the grader account working or not by running this command : `ssh -i linux_26.pem -p 2200 grader@18.209.13.101`.
 
 
 ## Prepare to deploy the project
@@ -159,10 +159,10 @@ sudo apt-get upgrade
 
 - While logged in as `grader`,
 - From the `/var/www` directory, Clone the catalog project:<br>
-`sudo git clone https://github.com/SkBadulla/catalog.git`.
+`sudo git clone https://github.com/YVenkatesh7/catalog.git`.
 - Change the ownership of the `catalog` directory to `grader` using: `sudo chown -R grader:grader catalog/`.
 - Change to the `/var/www/catalog/catalog` directory.
-- Rename the `main.py` file to `__init__.py` using: `mv mainpage.py __init__.py`.
+- Rename the `main.py` file to `__init__.py` using: `mv main.py __init__.py`.
 - We need to change sqlite to postgresql create_engine in `__init__.py`,`Data_Setup.py` and `database_init.py`,
    ```
    # engine = create_engine("sqlite:///catalog.db")
@@ -174,10 +174,10 @@ sudo apt-get upgrade
 - Go to [Google Cloud Plateform](https://console.cloud.google.com/).
 - Click `APIs & services` on left menu.
 - Click `Credentials`.
-- Create an OAuth Client ID (under the Credentials tab), and add http://3.93.45.233.xip.io and 
-http://ec2-3-93-45-233.compute-1.amazonaws.com/ as authorized JavaScript 
+- Create an OAuth Client ID (under the Credentials tab), and add http://18.209.13.101.xip.io and 
+http://ec2-18-209-13-101.compute-1.amazonaws.com/ as authorized JavaScript 
 origins.
-- Add http://3.93.45.233.xip.io/login,http://3.93.45.233.xip.io/gconnect,http://3.93.45.233.xip.io/callback
+- Add http://18.209.13.101.xip.io/login,http://18.209.13.101.xip.io/gconnect,http://18.209.13.101.xip.io/callback
 as authorized redirect URI.
 - Download the corresponding JSON file, open it and copy the contents.
 - Open `/var/www/catalog/catalog/client_secrets.json` and paste the previous contents into the this file.
@@ -211,9 +211,9 @@ as authorized redirect URI.
   - Paste this code: 
   ```
   <VirtualHost *:80>
-      ServerName 3.93.45.233.xip.io
-      ServerAlias ec2-3-93-45-233.compute-1.amazonaws.com
-      ServerAdmin ubuntu@3.93.45.233
+      ServerName 18.209.13.101.xip.io
+      ServerAlias ec2-18-209-13-101.compute-1.amazonaws.com
+      ServerAdmin ubuntu@18.209.13.101
       WSGIDaemonProcess catalog python-path=/var/www/catalog:/var/www/catalog/catalog/venv3/lib/python3.5/site-packages
       WSGIProcessGroup catalog
       WSGIScriptAlias / /var/www/catalog/catalog.wsgi
@@ -273,6 +273,6 @@ The following prompt will be returned:
 ### Step 13.5: Launch the Web Application
 
 - Restart Apache again: `sudo service apache2 restart`.
-- Open your browser to http://3.93.45.233 or http://ec2-3-93-45-233.us-east-2.compute.amazonaws.com.
+- Open your browser to http://18.209.13.101 or http://ec2-18-209-13-101.compute-1.amazonaws.com.
 
 **Special Thanks to [Alain Boisvert](https://github.com/boisalai)* for a very helpful README in Linux Server Configuration Project-Udacity**

@@ -9,17 +9,17 @@ This page explains how to secure and set up a Linux distribution on a virtual ma
 - The web application is my [Item Catalog project](https://github.com/YVenkatesh7/catalog.git) created earlier in this Nanodegree program.
 - The database server is [PostgreSQL](https://www.postgresql.org/).
 
-You can visit http://18.209.13.101/ or http://ec2-18-209-13-101.compute-1.amazonaws.com/ for the website deployed.
+You can visit http://54.167.43.146.xip.io/ or http://ec2-54-167-43-146.compute-1.amazonaws.com/ for the website deployed.
 
 ## Get a server
 ### Step 1: Start a new Ubuntu Linux server instance on Amazon EC2 
 
   - Login to *[aws.amazon.com](https://console.aws.amazon.com)* and login to default user (ubuntu)
   - Choose EC2 and Launch Instance with appropriate settings.
-  - Check for instance IPv4 public IP - 18.209.13.101
+  - Check for instance IPv4 public IP - 54.167.43.146
   - we can download a .pem file and connect with following command
     ```
-    ssh -i linux_26.pem ubuntu@18.209.13.101
+    ssh -i linux_28.pem ubuntu@54.167.43.146
     ``` 
   - 22 is Port by Default,Later we need to change it to 2200 as per the
     udacity-linux-server-configuration rubrics.
@@ -41,7 +41,7 @@ sudo apt-get upgrade
 - Save and exit using esc and confirm with :wq.
 - Restart SSH: `sudo service ssh restart`.
 - Change inbound rules in Amazon EC2 --> Type : Custom TCP Rule as 2200
-- To check port 2200 wether working or not by `ssh -i linux_26.pem -p 2200 ubuntu@18.209.13.101` 
+- To check port 2200 wether working or not by `ssh -i linux_28.pem -p 2200 ubuntu@54.167.43.146` 
 
 ### Step 4: Configure the Uncomplicated Firewall (UFW)
 
@@ -174,10 +174,10 @@ sudo apt-get upgrade
 - Go to [Google Cloud Plateform](https://console.cloud.google.com/).
 - Click `APIs & services` on left menu.
 - Click `Credentials`.
-- Create an OAuth Client ID (under the Credentials tab), and add http://18.209.13.101.xip.io and 
-http://ec2-18-209-13-101.compute-1.amazonaws.com/ as authorized JavaScript 
+- Create an OAuth Client ID (under the Credentials tab), and add http://54.167.43.146.xip.io and 
+http://ec2-54-167-43-146.compute-1.amazonaws.com/ as authorized JavaScript 
 origins.
-- Add http://18.209.13.101.xip.io/login,http://18.209.13.101.xip.io/gconnect,http://18.209.13.101.xip.io/callback
+- Add http://54.167.43.146.xip.io/login,http://54.167.43.146.xip.io/gconnect,http://54.167.43.146.xip.io/callback
 as authorized redirect URI.
 - Download the corresponding JSON file, open it and copy the contents.
 - Open `/var/www/catalog/catalog/client_secrets.json` and paste the previous contents into the this file.
@@ -211,9 +211,9 @@ as authorized redirect URI.
   - Paste this code: 
   ```
   <VirtualHost *:80>
-      ServerName 18.209.13.101.xip.io
-      ServerAlias ec2-18-209-13-101.compute-1.amazonaws.com
-      ServerAdmin ubuntu@18.209.13.101
+      ServerName 54.167.43.146.xip.io
+      ServerAlias ec2-54-167-43-146.compute-1.amazonaws.com
+      ServerAdmin ubuntu@54.167.43.146
       WSGIDaemonProcess catalog python-path=/var/www/catalog:/var/www/catalog/catalog/venv3/lib/python3.5/site-packages
       WSGIProcessGroup catalog
       WSGIScriptAlias / /var/www/catalog/catalog.wsgi
@@ -273,6 +273,6 @@ The following prompt will be returned:
 ### Step 13.5: Launch the Web Application
 
 - Restart Apache again: `sudo service apache2 restart`.
-- Open your browser to http://18.209.13.101 or http://ec2-18-209-13-101.compute-1.amazonaws.com.
+- Open your browser to http://54.167.43.146.xip.io or http://ec2-54-167-43-146.compute-1.amazonaws.com.
 
 **Special Thanks to [Alain Boisvert](https://github.com/boisalai)* for a very helpful README in Linux Server Configuration Project-Udacity**

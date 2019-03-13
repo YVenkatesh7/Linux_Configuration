@@ -113,7 +113,7 @@ sudo apt-get upgrade
   - Run this command `sudo cp /home/ubuntu/.ssh/authorized_keys /home/grader/.ssh/authorized_keys`
   - change ownership `chown grader.grader /home/grader/.ssh`
   - add 'grader' to sudo group `sudo usermod -aG sudo grader`
-  - change permissions for .ssh folder `sudo chmod 0700 /home/grader/.ssh/`, for authorized_keys `chmod 644 authorized_keys`
+  - change permissions for .ssh folder `sudo chmod 0700 /home/grader/.ssh/`, for authorized_keys `sudo chmod 644 /home/grader/.ssh/authorized_keys`
   - Check in `vi /etc/ssh/sshd_config` file if `PermitRootLogin` is set to `no`
   - Restart SSH: `sudo service ssh restart`
   - On the local machine, cheking if the grader account working or not by running this command : `ssh -i linux_26.pem -p 2200 grader@18.209.13.101`.
